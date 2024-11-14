@@ -98,7 +98,7 @@ jobs:
               body: releaseDescription,  // Description as {release_name}
               draft: true
             });
-            return release.id;
+            return release.data.id;
 
       # Upload JAR files to the draft release
       - name: Upload JAR files to draft release
