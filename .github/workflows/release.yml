@@ -88,25 +88,31 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const tagName = context.payload.inputs.tag;
-            const releaseName = `${tagName} ${context.payload.inputs.release_name}`;
+            const releaseDescription = context.payload.inputs.release_name;
             const release = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tagName,
-              name: releaseName,
+              name: tagName,  // Title as {tag}
+              body: releaseDescription,  // Description as {release_name}
               draft: true
             });
-            core.setOutput("release_id", release.data.id);
+            // Export release_id to the environment for the next steps
+            console.log(`RELEASE_ID=${release.data.id}`);
+          env:
+            RELEASE_ID: ${{ steps.create_draft.outputs.release_id }}
 
       # Upload JAR files to the draft release
       - name: Upload JAR files to draft release
         uses: actions/github-script@v6
+        env:
+          RELEASE_ID: ${{ env.RELEASE_ID }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const path = require('path');
-            const releaseId = core.getInput("release_id");
+            const releaseId = process.env.RELEASE_ID;
 
             // Directory containing JAR files
             const targetDir = path.join(process.env.GITHUB_WORKSPACE, 'target');
@@ -140,10 +146,12 @@ jobs:
       # Publish the draft release
       - name: Publish draft release
         uses: actions/github-script@v6
+        env:
+          RELEASE_ID: ${{ env.RELEASE_ID }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const releaseId = core.getInput("release_id");
+            const releaseId = process.env.RELEASE_ID;
             await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
