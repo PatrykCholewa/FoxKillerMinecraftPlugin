@@ -80,24 +80,73 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -am "Set version to ${{ env.NEXT_SNAPSHOT_VERSION }}"
 
-      # Push changes back to the repository
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Create and publish the release
-      - name: Create and publish release
+      # Create draft release
+      - name: Create draft release
+        id: create_draft
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const tagName = context.payload.inputs.tag;
-            const releaseName = context.payload.inputs.release_name;
-            await github.rest.repos.createRelease({
+            const releaseName = `${tagName} ${context.payload.inputs.release_name}`;
+            const release = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tagName,
               name: releaseName,
+              draft: true
+            });
+            core.setOutput("release_id", release.data.id);
+
+      # Upload JAR files to the draft release
+      - name: Upload JAR files to draft release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const releaseId = core.getInput("release_id");
+
+            // Directory containing JAR files
+            const targetDir = path.join(process.env.GITHUB_WORKSPACE, 'target');
+
+            // Upload each JAR file in the target directory
+            fs.readdirSync(targetDir).forEach(async file => {
+              if (file.endsWith('.jar')) {
+                const filePath = path.join(targetDir, file);
+                const stat = fs.statSync(filePath);
+                await github.rest.repos.uploadReleaseAsset({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  release_id: releaseId,
+                  name: file,
+                  data: fs.readFileSync(filePath),
+                  headers: {
+                    'content-type': 'application/java-archive',
+                    'content-length': stat.size
+                  }
+                });
+              }
+            });
+
+      # Push changes back to the repository
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+
+      # Publish the draft release
+      - name: Publish draft release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const releaseId = core.getInput("release_id");
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: releaseId,
               draft: false
             });
