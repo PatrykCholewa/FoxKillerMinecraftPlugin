@@ -6,7 +6,7 @@
 
     <groupId>com.github.PatrykCholewa</groupId>
     <artifactId>FoxKiller</artifactId>
-    <version>1.0.2-1.21.3</version>
+    <version>1.0.3-1.21.3-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
