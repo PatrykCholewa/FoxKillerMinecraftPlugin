@@ -62,15 +62,6 @@ jobs:
           mvn install
           mvn package
 
-      # Upload JAR files to GitHub Release
-      - name: Upload JAR files to GitHub Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: "${{ github.workspace }}/target/*.jar"
-      
       # Create a new tag for the release version
       - name: Create tag for release
         run: |
