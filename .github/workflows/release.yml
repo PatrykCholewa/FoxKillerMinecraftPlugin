@@ -99,14 +99,12 @@ jobs:
             });
             // Export release_id to the environment for the next steps
             console.log(`RELEASE_ID=${release.data.id}`);
-          env:
-            RELEASE_ID: ${{ steps.create_draft.outputs.release_id }}
 
       # Upload JAR files to the draft release
       - name: Upload JAR files to draft release
         uses: actions/github-script@v6
         env:
-          RELEASE_ID: ${{ env.RELEASE_ID }}
+          RELEASE_ID: ${{ steps.create_draft.outputs.release_id }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -147,7 +145,7 @@ jobs:
       - name: Publish draft release
         uses: actions/github-script@v6
         env:
-          RELEASE_ID: ${{ env.RELEASE_ID }}
+          RELEASE_ID: ${{ steps.create_draft.outputs.release_id }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
