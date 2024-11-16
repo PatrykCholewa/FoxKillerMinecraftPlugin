@@ -42,6 +42,22 @@ jobs:
           echo "RELEASE_VERSION=${MAJOR}.${MINOR}.${PATCH}-1.21.3" >> $GITHUB_ENV
           echo "NEXT_SNAPSHOT_VERSION=${MAJOR}.${MINOR}.$((PATCH + 1))-1.21.3-SNAPSHOT" >> $GITHUB_ENV
 
+      # Update paper-plugin.yml to release version
+      - name: Update version in paper-plugin.yml for release
+        run: |
+          FILE_PATH="${{ github.workspace }}/src/main/resources/paper-plugin.yml"
+          VERSION="${{ env.RELEASE_VERSION }}"
+          
+          if [[ -f "$FILE_PATH" ]]; then
+            yq eval ".version = \"${VERSION}\"" -i "$FILE_PATH"
+            echo "Updated version in $FILE_PATH to $VERSION"
+          else
+            echo "Error: $FILE_PATH not found!"
+            exit 1
+          fi
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+        shell: bash
 
       # Update pom.xml to release version
       - name: Update version in pom.xml for release
@@ -66,6 +82,23 @@ jobs:
       - name: Create tag for release
         run: |
           git tag "v${{ env.RELEASE_VERSION }}"
+
+      # Update paper-plugin.yml to next SNAPSHOT version
+      - name: Update version in paper-plugin.yml for snapshot
+        run: |
+          FILE_PATH="${{ github.workspace }}/src/main/resources/paper-plugin.yml"
+          VERSION="${{ env.NEXT_SNAPSHOT_VERSION }}"
+          
+          if [[ -f "$FILE_PATH" ]]; then
+            yq eval ".version = \"${VERSION}\"" -i "$FILE_PATH"
+            echo "Updated version in $FILE_PATH to $VERSION"
+          else
+            echo "Error: $FILE_PATH not found!"
+            exit 1
+          fi
+        env:
+          NEXT_SNAPSHOT_VERSION: ${{ env.NEXT_SNAPSHOT_VERSION }}
+        shell: bash
 
       # Update pom.xml to next SNAPSHOT version
       - name: Update version in pom.xml to next SNAPSHOT
