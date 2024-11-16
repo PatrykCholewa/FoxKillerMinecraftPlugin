@@ -1,6 +1,6 @@
 name: FoxKiller
 description: Fun plugin
-version: 1.0.3-SNAPSHOT
+version: 1.1.0-1.21.3
 api-version: 1.21.3
 main: com.github.PatrykCholewa.FoxKiller.FoxKillerPlugin
 bootstrapper: com.github.PatrykCholewa.FoxKiller.FoxKillerPluginBootstrap
