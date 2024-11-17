@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static io.papermc.paper.registry.keys.EnchantmentKeys.VANISHING_CURSE;
+import static io.papermc.paper.registry.keys.ItemTypeKeys.BOOK;
+import static io.papermc.paper.registry.keys.ItemTypeKeys.SHIELD;
 
 public class EnchantmentDefinitions {
 
@@ -20,7 +22,13 @@ public class EnchantmentDefinitions {
             .exclusiveWith(RegistrySet.keySet(RegistryKey.ENCHANTMENT, List.of(VANISHING_CURSE)))
             .build();
 
+    public static EnchantmentAssignment DEFLECTIVE_RETRIBUTION = new EnchantmentAssignmentBuilder("deflective_retribution")
+            .title(Component.text("Deflective Retribution"))
+            .primaryItems(RegistrySet.keySet(RegistryKey.ITEM,  List.of(SHIELD, BOOK)))
+            .supportedItems(RegistrySet.keySet(RegistryKey.ITEM,  List.of(SHIELD)))
+            .build();
+
     public static Collection<EnchantmentAssignment> getDefinitions() {
-        return Lists.newArrayList(CURSE_OF_ANCHORING);
+        return Lists.newArrayList(CURSE_OF_ANCHORING, DEFLECTIVE_RETRIBUTION);
     }
 }

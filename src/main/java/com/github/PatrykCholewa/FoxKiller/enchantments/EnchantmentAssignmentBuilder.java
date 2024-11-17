@@ -18,7 +18,9 @@ public class EnchantmentAssignmentBuilder {
     private final String keyName;
     private Component title;
     private TagKey<ItemType> supportedItems;
+    private RegistryKeySet<ItemType> supportedItemsExact;
     private TagKey<ItemType> primaryItems;
+    private RegistryKeySet<ItemType> primaryItemsExact;
     private int weight = 1;
     private int maxLevel = 1;
     private EnchantmentRegistryEntry.EnchantmentCost minimumCost = EnchantmentRegistryEntry.EnchantmentCost.of(30, 1);
@@ -41,8 +43,18 @@ public class EnchantmentAssignmentBuilder {
         return this;
     }
 
+    public EnchantmentAssignmentBuilder supportedItems(RegistryKeySet<ItemType> supportedItems) {
+        this.supportedItemsExact = supportedItems;
+        return this;
+    }
+
     public EnchantmentAssignmentBuilder primaryItems(TagKey<ItemType> primaryItems) {
         this.primaryItems = primaryItems;
+        return this;
+    }
+
+    public EnchantmentAssignmentBuilder primaryItems(RegistryKeySet<ItemType> primaryItems) {
+        this.primaryItemsExact = primaryItems;
         return this;
     }
 
@@ -95,10 +107,14 @@ public class EnchantmentAssignmentBuilder {
                 .anvilCost(anvilCost)
                 .activeSlots(equipmentSlotGroups);
 
-        if (supportedItems != null) {
+        if (supportedItemsExact != null) {
+            builder = builder.supportedItems(supportedItemsExact);
+        } else if (supportedItems != null) {
             builder = builder.supportedItems(event.getOrCreateTag(supportedItems));
         }
-        if (primaryItems != null) {
+        if (primaryItemsExact != null) {
+            builder = builder.primaryItems(primaryItemsExact);
+        } else if (primaryItems != null) {
             builder = builder.primaryItems(event.getOrCreateTag(primaryItems));
         }
         if (exclusiveWith != null) {

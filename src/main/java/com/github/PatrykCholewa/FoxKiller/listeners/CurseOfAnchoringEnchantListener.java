@@ -13,11 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Optional;
 
+import static com.github.PatrykCholewa.FoxKiller.utils.EnchantmentUtils.getEnchantmentRef;
+
 public class CurseOfAnchoringEnchantListener implements Listener {
 
-    private static final Enchantment ENCHANTMENT = RegistryAccess.registryAccess()
-            .getRegistry(RegistryKey.ENCHANTMENT)
-            .get(EnchantmentDefinitions.CURSE_OF_ANCHORING.getKey());
+    private static final Enchantment ENCHANTMENT = getEnchantmentRef(EnchantmentDefinitions.CURSE_OF_ANCHORING);
 
     @EventHandler
     public static void onDeath(PlayerDeathEvent event) {
