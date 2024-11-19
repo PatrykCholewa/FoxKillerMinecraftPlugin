@@ -1,8 +1,6 @@
 package com.github.PatrykCholewa.FoxKiller.listeners;
 
 import com.github.PatrykCholewa.FoxKiller.enchantments.EnchantmentDefinitions;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

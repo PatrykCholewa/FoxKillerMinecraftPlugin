@@ -12,3 +12,6 @@ Works on Paper
   | A | E | A |
 
   A - lapis, B - spectral arrow, C - book, D - tipped arrow, E - arrow
+- Adds new Ghast's Breath mechanism 
+  - Catching it by deflecing ghast fireball with empty bottle
+  - New alchemy mechanism (fermented spider eye + 3 ghast's breath -> dragon's breath)

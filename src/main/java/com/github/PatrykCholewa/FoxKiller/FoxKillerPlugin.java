@@ -3,6 +3,7 @@ package com.github.PatrykCholewa.FoxKiller;
 import com.github.PatrykCholewa.FoxKiller.listeners.CurseOfAnchoringEnchantListener;
 import com.github.PatrykCholewa.FoxKiller.listeners.DeflectiveRetributionEnchantListener;
 import com.github.PatrykCholewa.FoxKiller.listeners.FoxKillListener;
+import com.github.PatrykCholewa.FoxKiller.listeners.GhastBreathListener;
 import com.github.PatrykCholewa.FoxKiller.recipes.RecipeDefinitions;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -27,6 +28,7 @@ public class FoxKillerPlugin extends JavaPlugin {
         pluginManager.registerEvents(new FoxKillListener(), instance);
         pluginManager.registerEvents(new CurseOfAnchoringEnchantListener(), instance);
         pluginManager.registerEvents(new DeflectiveRetributionEnchantListener(), instance);
+        pluginManager.registerEvents(new GhastBreathListener(), instance);
 
         new RecipeDefinitions(instance).createDefinitions()
                 .forEach(getServer()::addRecipe);
