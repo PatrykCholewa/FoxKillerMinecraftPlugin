@@ -2,14 +2,11 @@ package com.github.PatrykCholewa.FoxKiller.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.WeatherType;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.weather.WeatherEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 

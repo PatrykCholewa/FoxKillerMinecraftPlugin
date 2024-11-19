@@ -1,7 +1,6 @@
 package com.github.PatrykCholewa.FoxKiller.listeners;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
@@ -16,11 +15,9 @@ import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.bukkit.Sound.ITEM_BOTTLE_FILL_DRAGONBREATH;
@@ -29,8 +26,6 @@ public class GhastBreathListener implements Listener {
 
     private static final Component GHAST_BREATH_DISPLAY_NAME = Component.text("Ghast's Breath");
     private static final Component GHAST_BREATH_LORE = Component.text("Can be condensed using alchemy with a foul ingredient");
-
-    private PluginManager pluginManager;
 
     @EventHandler
     public void onGhastFireballHit(EntityDamageByEntityEvent event) {
@@ -82,9 +77,6 @@ public class GhastBreathListener implements Listener {
         ItemStack potion3 = brewerInventory.getItem(2);
 
         if (!isGhastBreath(potion1) || !isGhastBreath(potion2) || !isGhastBreath(potion3)) {
-            Bukkit.getLogger().warning(potion1.toString());
-            Bukkit.getLogger().info(potion2.toString());
-            Bukkit.getLogger().info(potion3.toString());
             return;
         }
 
