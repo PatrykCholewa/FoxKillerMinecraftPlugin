@@ -35,25 +35,17 @@ public class FoxKillListener implements Listener {
         ItemStack is;
 
         int rand = new Random().nextInt();
-        if ((rand % 3) == 0) {
+        if ((rand % 7) == 0) {
             is = new ItemStack(Material.CAKE);
             list.add(is);
         }
-        if ((rand % 7) == 0) {
+        if ((rand % 23) == 0) {
             is = new ItemStack(Material.INFESTED_STONE_BRICKS);
             list.add(is);
         }
 
-        if ((rand % 31) == 0) {
+        if ((rand % 79) == 0) {
             is = new ItemStack(Material.OMINOUS_BOTTLE);
-            list.add(is);
-        }
-
-        if ((rand % 47) == 0) {
-            is = new ItemStack(Material.PLAYER_HEAD);
-            SkullMeta skullMeta = (SkullMeta) is.getItemMeta();
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer("Zirekall"));
-            is.setItemMeta(skullMeta);
             list.add(is);
         }
 
